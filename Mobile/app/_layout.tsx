@@ -12,6 +12,7 @@ export default function RootLayout() {
 
     const [fontLoaded] = useFonts({
         "Poppins-Black": require('../assets/fonts/Poppins-Black.ttf'),
+        "Poppins-Medium": require('../assets/fonts/Poppins-Medium.ttf'),
     })
 
     useEffect(()=>{
