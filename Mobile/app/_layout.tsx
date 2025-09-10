@@ -1,8 +1,12 @@
 import {SplashScreen, Stack} from "expo-router";
 import {useFonts} from "expo-font";
 import {useEffect} from "react";
+import { Text } from 'react-native';
+
 
 export default function RootLayout() {
+
+
 
     SplashScreen.preventAutoHideAsync();
 
@@ -11,10 +15,13 @@ export default function RootLayout() {
     })
 
     useEffect(()=>{
-        if(fontLoaded) SplashScreen.hideAsync()
+        if(fontLoaded) {
+            SplashScreen.hideAsync();
+        }
     },[fontLoaded])
 
-  return <Stack screenOptions={{ headerShown: false }}>
+
+    return <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="(auth)"
       />
