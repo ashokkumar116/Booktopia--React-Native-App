@@ -1,11 +1,38 @@
-import {View, Text, KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, ScrollView} from 'react-native'
+import {
+    View,
+    Text,
+    KeyboardAvoidingView,
+    Platform,
+    TextInput,
+    TouchableOpacity,
+    ScrollView,
+    ActivityIndicator
+} from 'react-native'
 import React, {useState} from 'react'
 import {Image} from "expo-image";
 import {Ionicons} from "@expo/vector-icons";
-import {Link} from "expo-router";
+import {Link, useRouter} from "expo-router";
+import useAuthStore from "@/app/lib/zustand";
 
 const Register = () => {
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const {user, loading, register}: AuthStoreProps = useAuthStore();
+
+    const router = useRouter();
+
+    const handleRegister = async () => {
+        const response: boolean | undefined = await register({username, email: email, password: password});
+        if (response) {
+            console.log("User registered");
+            router.push("/");
+        }
+
+    }
+
+
     return (
         <KeyboardAvoidingView
             className="flex-1"
@@ -37,12 +64,16 @@ const Register = () => {
                         <TextInput
                             placeholder="Full Name"
                             className="flex-1 border-none outline-none p-3 rounded-md text-indigo-600"
+                            value={username}
+                            onChangeText={(text: string) => setUsername(text)}
                         />
                     </View>
                     <View className="flex-row items-center border-2 border-indigo-600 px-2 rounded-md justify-center">
                         <Ionicons name='mail' size={24} className=" text-indigo-600"/>
                         <TextInput
                             placeholder="example@domain.com"
+                            value={email}
+                            onChangeText={(text: string) => setEmail(text)}
                             className="flex-1 border-none outline-none p-3 rounded-md text-indigo-600"
                         />
                     </View>
@@ -57,6 +88,8 @@ const Register = () => {
                             placeholder="Password"
                             className="flex-1 border-none outline-none p-3 rounded-md text-indigo-600"
                             secureTextEntry={showPassword}
+                            value={password}
+                            onChangeText={(text: string) => setPassword(text)}
                         />
                         <Ionicons
                             name={showPassword ? 'eye' : 'eye-off'}
@@ -66,16 +99,29 @@ const Register = () => {
                         />
                     </View>
                     <View>
-                        <TouchableOpacity
-                            className="justify-center items-center rounded-md bg-indigo-600 px-2 py-4 flex-row gap-2"
-                        >
-                            <Ionicons
-                                name='enter'
-                                size={24}
-                                className="text-white"
-                            />
-                            <Text className="text-white">Register</Text>
-                        </TouchableOpacity>
+                        {
+                            loading ?
+                                <TouchableOpacity
+                                    className="justify-center items-center rounded-md bg-indigo-600 px-2 py-4 flex-row gap-2"
+                                    disabled={loading}
+                                >
+                                    <ActivityIndicator
+                                        size={20}
+                                        color="white"
+                                    />
+                                </TouchableOpacity>
+                                : <TouchableOpacity
+                                    className="justify-center items-center rounded-md bg-indigo-600 px-2 py-4 flex-row gap-2"
+                                    onPress={handleRegister}
+                                >
+                                    <Ionicons
+                                        name='enter'
+                                        size={24}
+                                        className="text-white"
+                                    />
+                                    <Text className="text-white">Register</Text>
+                                </TouchableOpacity>
+                        }
                     </View>
                     <View
                         className="flex-row gap-1 justify-center"
@@ -95,4 +141,4 @@ const Register = () => {
         </KeyboardAvoidingView>
     )
 }
-export default Register
+export default Register;
