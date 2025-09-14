@@ -18,5 +18,7 @@ interface RegisterResponse{
 interface AuthStoreProps{
     user:User | null,
     loading: boolean,
-    register:(data:RegisterProps)=>Promise<boolean | undefined>
+    register:(data:RegisterProps)=>Promise<boolean | undefined>,
+    token:string | null,
+    errorMessage:any,
 }

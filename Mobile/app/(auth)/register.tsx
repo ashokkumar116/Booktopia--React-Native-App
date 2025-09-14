@@ -6,7 +6,7 @@ import {
     TextInput,
     TouchableOpacity,
     ScrollView,
-    ActivityIndicator
+    ActivityIndicator, Alert
 } from 'react-native'
 import React, {useState} from 'react'
 import {Image} from "expo-image";
@@ -19,17 +19,19 @@ const Register = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
-    const {user, loading, register}: AuthStoreProps = useAuthStore();
+    const {loading, register, errorMessage}: AuthStoreProps = useAuthStore();
 
     const router = useRouter();
+    console.log(errorMessage)
 
     const handleRegister = async () => {
         const response: boolean | undefined = await register({username, email: email, password: password});
         if (response) {
             console.log("User registered");
             router.push("/");
+        } else {
+            Alert.alert("Error Registering User",errorMessage);
         }
-
     }
 
 
