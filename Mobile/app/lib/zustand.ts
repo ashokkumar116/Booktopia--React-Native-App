@@ -26,8 +26,25 @@ const useAuthStore = create<AuthStoreProps>((set)=>({
             set({loading:false});
         }
     },
-    login:({email,password}:RegisterProps)=>{
-
+    login:async({email,password}:LoginProps)=>{
+        try {
+            set({loading:true});
+            const res =await axios.post('/auth/login',{email,password});
+            if(res.status === 200){
+                set({user:res.data.user});
+                set({token:res.data.token});
+                return true;
+            }
+            
+        } catch (error) {
+            set({loading:false});
+            set({user:null});
+            // @ts-ignore
+            set({errorMessage:error?.response?.data?.message});
+            return false;
+        }finally{
+            set({loading:false});
+        }
     }
 }))
 

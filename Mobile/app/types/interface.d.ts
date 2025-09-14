@@ -4,6 +4,11 @@ interface RegisterProps{
     password:string,
 }
 
+interface LoginProps{
+    email:string,
+    password:string,
+}
+
 interface User{
     username:string,
     email:string,
@@ -21,4 +26,5 @@ interface AuthStoreProps{
     register:(data:RegisterProps)=>Promise<boolean | undefined>,
     token:string | null,
     errorMessage:any,
+    login:(data:LoginProps)=>Promise<boolean | undefined>,
 }
