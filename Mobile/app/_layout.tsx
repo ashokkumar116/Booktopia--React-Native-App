@@ -1,10 +1,32 @@
-import {SplashScreen, Stack} from "expo-router";
+import {SplashScreen, Stack, useRouter, useSegments} from "expo-router";
 import {useFonts} from "expo-font";
 import {useEffect} from "react";
 import { Text } from 'react-native';
+import useAuthStore from "./lib/zustand";
 
 
 export default function RootLayout() {
+
+    const router = useRouter();
+    const segments = useSegments();
+    
+    const {user,token,checkAuth,loading}:AuthStoreProps = useAuthStore();
+
+    useEffect(()=>{
+      checkAuth();
+    },[]);
+
+    useEffect(()=>{
+      const inAuthScreen = segments[0] === "(auth)";
+      const isSignedIn = token && user;
+
+      if(!isSignedIn && !inAuthScreen){
+        router.replace("/(auth)");
+      }
+      else if(isSignedIn && inAuthScreen){
+        router.replace("/(tabs)");
+      }
+    },[token,segments,user]);
 
 
 

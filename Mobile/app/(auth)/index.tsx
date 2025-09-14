@@ -15,7 +15,7 @@ const Login = () => {
     const router = useRouter();
 
 
-    const {loading,login,errorMessage}:AuthStoreProps = useAuthStore();
+    const {loading,login,errorMessage,user,token}:AuthStoreProps = useAuthStore();
 
     const handleLogin = async()=>{
         const res = await login({email,password});

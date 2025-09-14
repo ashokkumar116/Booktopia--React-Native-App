@@ -27,4 +27,6 @@ interface AuthStoreProps{
     token:string | null,
     errorMessage:any,
     login:(data:LoginProps)=>Promise<boolean | undefined>,
+    checkAuth:()=>Promise<void>,
+    logout:()=>Promise<void>,
 }
