@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const registerUser = async (req, res) => {
-    const {name, email, password} = req.body;
+    const {username, email, password} = req.body;
 
     const existingUser = await User.find({email});
 
@@ -16,10 +16,10 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const profileImage = await `https://api.dicebear.com/9.x/avataaars/svg?seed=${name}`
+    const profileImage = await `https://api.dicebear.com/9.x/avataaars/svg?seed=${username}`
 
     const user = await new User({
-        name,
+        username,
         email,
         password: hashedPassword,
         profileImage
@@ -55,7 +55,7 @@ const loginUser = async (req, res) => {
 
     const token = jwt.sign({
             email: user.email,
-            name: user.name,
+            username: user.username,
             profileImage: user.profileImage
         }, process.env.JWT_SECRET,
         {expiresIn: '1d'}

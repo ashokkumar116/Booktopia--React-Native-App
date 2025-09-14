@@ -12,7 +12,7 @@ const useAuthStore = create<AuthStoreProps>((set) => ({
         try {
             set({ loading: true });
             const res = await axios.post("/auth/register", {
-                name: username,
+                username,
                 email,
                 password,
             });
