@@ -37,7 +37,7 @@ const loginUser = async (req, res) => {
 
     const [user] = await User.find({email});
 
-    console.log(user);
+    // console.log(user);
 
     if (!user) {
         return res.status(400).json({
