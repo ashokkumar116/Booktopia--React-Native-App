@@ -8,6 +8,10 @@ const addBook = async (req, res) => {
     if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
     }
+    
+    if (!title || !rating || !caption || !image) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
 
     const imageResponse = await cloudinary.uploader.upload(image,{
         folder:"BookTopia"
@@ -15,9 +19,6 @@ const addBook = async (req, res) => {
     
     const imageUrl = imageResponse.secure_url;
 
-    if (!title || !rating || !caption || !image) {
-        return res.status(400).json({ message: "All fields are required" });
-    }
 
     const book = new Book({
         title,
