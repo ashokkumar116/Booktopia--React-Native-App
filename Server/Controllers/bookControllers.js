@@ -34,7 +34,20 @@ const getAllBooks = async (req, res) => {
     });
 };
 
+
+const getMyBooks = async(req,res)=>{
+    const userId = req.user._id;
+
+    const books = await Book.find({user:userId}).populate('user',"username profileImage");
+
+    return res.status(200).json({
+        books
+    })
+
+}
+
 module.exports = {
     addBook,
     getAllBooks,
+    getMyBooks
 };
