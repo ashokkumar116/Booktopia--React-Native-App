@@ -1,12 +1,28 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React, { use } from 'react'
+import React, { useEffect, useState } from 'react'
 import useAuthStore from '../lib/zustand'
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
+import authAxios from '../Services/authAxios';
 
 const Profile = () => {
 
   const {user,token,logout} = useAuthStore();
+
+  const [books,setBooks] = useState<string[]>([]);
+
+  const fetchBooks = async()=>{
+     const response = await authAxios.get('/books/getmybooks');
+     setBooks(response.data.books);
+  }
+
+  useEffect(()=>{
+    fetchBooks();
+  },[])
+
+  useEffect(()=>{
+    console.log(books)
+  },[books]);
 
   const formatJoinDate = (dateString:string)=>{
     const date = new Date(dateString);
@@ -40,6 +56,10 @@ const Profile = () => {
             <Ionicons name="log-out" size={16} color="white" />
             <Text className='text-white text-[16px]'>Logout</Text>
           </TouchableOpacity>
+        </View>
+        <View className='mx-5 p-5 '>
+          <Text className='font-bold text-lg'>Your Book Recommendations</Text>
+          
         </View>
     </View>
   )

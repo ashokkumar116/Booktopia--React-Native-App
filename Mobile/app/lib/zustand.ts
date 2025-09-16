@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axios from "@/app/axios";
+import axios from "@/app/Services/axios";
 
 import asyncStorage from "@react-native-async-storage/async-storage";
 
