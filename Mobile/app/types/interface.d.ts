@@ -13,6 +13,9 @@ interface User{
     username:string,
     email:string,
     profileImage:string,
+    createdAt:string,
+    updatedAt:string,
+    _id:string,
 }
 
 interface RegisterResponse{
