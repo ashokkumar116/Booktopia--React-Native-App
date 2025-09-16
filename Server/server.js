@@ -6,7 +6,7 @@ const connectDB = require('./db');
 const authRoutes = require('./routes/authRoutes');
 const bookRoutes = require('./Routes/bookRoutes')
 
-app.use(express.json());
+app.use(express.json({limit:'10mb'}));
 app.use(cors({
     origin: "http://localhost:8081",
     credentials: true,
