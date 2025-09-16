@@ -72,8 +72,40 @@ const getMyBooks = async (req, res) => {
     });
 };
 
+const deleteBook = async(req,res)=>{
+    const user = req.user;
+    
+    const book = await Book.findById(req.params.id);
+
+    if(!book){
+        return res.status(404).json({message:"Book not found"});
+    }
+
+    if(user._id.toString() !== book.user.toString()){
+        return res.status(403).json({message:"You are not authorized to delete this book"});
+    }
+
+    if(book.image && book.image.includes("cloudinary")){
+        try {
+
+            const publicId = book.image.split("/").pop().split(".")[0];
+            await cloudinary.uploader.destroy(`BookTopia/${publicId}`);
+            
+        } catch (error) {
+            console.log("Error Deleting Image from Cloudinary",error);
+        }
+    }
+
+    await book.deleteOne();
+
+    return res.status(200).json({message:"Book deleted successfully"});
+
+
+}
+
 module.exports = {
     addBook,
     getAllBooks,
     getMyBooks,
+    deleteBook
 };
