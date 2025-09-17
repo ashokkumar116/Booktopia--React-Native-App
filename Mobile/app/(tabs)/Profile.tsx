@@ -4,11 +4,15 @@ import useAuthStore from "../lib/zustand";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import authAxios from "../Services/authAxios";
+import { useRouter } from "expo-router";
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const Profile = () => {
     const { user, token, logout } = useAuthStore();
 
     const [books, setBooks] = useState<string[]>([]);
+
+    const router = useRouter();
 
     const fetchBooks = async () => {
         const response = await authAxios.get("/books/getmybooks");
@@ -55,6 +59,24 @@ const Profile = () => {
         );
     };
 
+    const EmptyComponent = ()=>{
+      return (
+          <View className="flex-1 gap-3 items-center">
+              <View>
+                <MaterialCommunityIcons name="notebook-remove-outline" size={64} color="gray" />
+              </View>
+              <Text className="text-xs text-center text-gray-600 italic">Your favorite book could be someone’s next favorite</Text>
+              <Text className="text-xs text-center text-gray-600 italic">Start by recommending the stories that inspired you.</Text>
+              <TouchableOpacity
+                onPress={()=>{router.push('/(tabs)/AddBook')}}
+                className="bg-green-500 px-2 py-4 rounded-md"
+              >
+                <Text className="text-white text-xs">Share a Book You Love</Text>
+              </TouchableOpacity>
+            </View>
+      )
+    }
+
     return (
         <ScrollView
           showsHorizontalScrollIndicator={false}
@@ -98,6 +120,9 @@ const Profile = () => {
                     data={books}
                     keyExtractor={(item) => item._id.toString()}
                     renderItem={({ item }) => <RenderItems item={item} />}
+                    ListEmptyComponent={()=>(
+                      <EmptyComponent />
+                    )}
                 />
             </View>
         </ScrollView>
