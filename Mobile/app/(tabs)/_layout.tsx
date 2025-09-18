@@ -7,7 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 const TabIcon = ({ title, icon, focused }: any) => {
     if (focused) {
         return (
-            <View className="flex-1 bg-green-600 p-5 flex-row justify-center items-center rounded-lg gap-2 mt-3">
+            <View className="flex-1 bg-green-600 p-5 flex-row justify-center items-center rounded-full gap-2 mt-3">
                 <Ionicons className="text-white" name={icon} size={15} />
                 <Text className="text-white">{title}</Text>
             </View>
